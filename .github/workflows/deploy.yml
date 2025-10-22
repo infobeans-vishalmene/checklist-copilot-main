@@ -33,7 +33,7 @@ jobs:
               git reset --hard
               git pull origin main
             else
-              https://github.com/infobeans-vishalmene/checklist-copilot-main.git .
+              git clone https://github.com/infobeans-vishalmene/checklist-copilot-main.git .
             fi
 
             # Build and run containers
