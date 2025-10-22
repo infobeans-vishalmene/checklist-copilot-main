@@ -1,0 +1,44 @@
+name: CI/CD Deploy to EC2 Free Tier
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+            echo "Deploying application..."
+
+            # App directory
+            mkdir -p ${{ secrets.APP_DIR }}
+            cd ${{ secrets.APP_DIR }}
+
+            # Clone or update repo
+            if [ -d ".git" ]; then
+              git reset --hard
+              git pull origin main
+            else
+              git clone https://github.com/<username>/<repo>.git .
+            fi
+
+            # Build and run containers
+            docker-compose build
+            docker-compose up -d
+
+            echo "Deployment completed."
+          EOF
