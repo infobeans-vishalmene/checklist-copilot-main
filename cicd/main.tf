@@ -7,7 +7,7 @@ provider "aws" {
 # -----------------------------
 resource "aws_key_pair" "checklist_key" {
   key_name   = "checklist-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file("~/.ssh/checklist-key.pub")
 }
 
 # -----------------------------
@@ -70,8 +70,7 @@ resource "aws_instance" "checklist_ec2" {
               DOCKER_COMPOSE_VERSION="2.27.0"
               curl -L "https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-
-              mkdir -p /home/ubuntu/checklist-app
+              
               EOF
 
   tags = {

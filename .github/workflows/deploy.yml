@@ -3,7 +3,7 @@ name: CI/CD Deploy to EC2 Free Tier
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -33,7 +33,7 @@ jobs:
               git reset --hard
               git pull origin main
             else
-              git clone https://github.com/<username>/<repo>.git .
+              https://github.com/infobeans-vishalmene/checklist-copilot-main.git .
             fi
 
             # Build and run containers
